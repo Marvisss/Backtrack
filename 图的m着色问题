@@ -1,0 +1,73 @@
+#include<stdio.h>
+#include<string.h>
+const int max=120;
+
+int n,m,edgenum;//顶点数，颜色数，边数
+int c[max][max];//图的链接矩阵,存储各点之间的关系，1：两点连接 
+int b[max];//存储当前各点的着色情况 
+int sum=0;//方案数
+bool isOk(int a);
+void Backtrack(int a);//回溯 
+int main()
+{
+	memset(Graph, 0, sizeof(c));//初始化为0 
+    scanf("输入颜色数：%d\n",&m);
+    scanf("输入顶点数和边数%d %d\n",&n,&edgenum);
+    for (int i=1;i<=edgenum;++i)
+	{
+        int x, y;
+        scanf("输入边连接信息%d %d",&x,&y);
+        c[x][y]=c[y][x]=1;
+    }
+    
+    Backtrack(1);
+    if (sum==0)
+	{
+		printf("NO\n");
+	}
+	else
+	{
+		printf("方案总数%d\n", sum);
+	}
+	return 0;
+}
+
+bool isOk(int a)
+{
+    for (int i=1;i<=n;++i)
+	{
+        if(c[a][i]==1 && b[i]==b[a])
+        {
+        	return false;
+		}
+    }
+    return true;
+}
+
+void Backtrack(int a)
+{
+    if (a>n)
+	{
+        sum++;
+        printf("方案:"); 
+        for (int i=1;i<=n;++i)
+        {
+        	printf("%d ",b[i]);
+		}
+        printf("\n");
+    }
+    else
+	{
+        for (int i=1;i<=m;++i)
+		{
+            b[a] = i;
+            if (isOk(a))
+			{
+				Backtrack(a+1);
+			}
+            b[a]=0;
+        }
+    }
+}
+
+
